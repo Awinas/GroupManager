@@ -21,9 +21,11 @@ from haruka.modules.translations.strings import tld, tld_help
 from haruka.modules.connection import connected
 
 PM_START = """Hai {}, nama saya adalah {}!
+
 Saya adalah pengurus group untuk anda! 
 
-Pemilik saya adalah [Awinas 🇲🇾] (https://t.me/awinaswina) 
+Pemilik saya adalah [Awinas 🇲🇾] (t.me/awinaswina) 
+
 Tekan /help atau butang Help untuk mengetahui dengan lebih lanjut mengenai potensi Layla! 
 
 Moga hari anda lebih ceria! 
@@ -144,7 +146,7 @@ def send_start(bot, update):
     first_name = update.effective_user.first_name 
     text = PM_START
 
-    keyboard = [[InlineKeyboardButton(text="🇮🇳 Language", callback_data="set_lang_")]]
+    keyboard = [[InlineKeyboardButton(text="🇲🇾 Language", callback_data="set_lang_")]]
     keyboard += [[InlineKeyboardButton(text="🛠 Reporting", callback_data="cntrl_panel_M"), 
         InlineKeyboardButton(text="❔ Help", callback_data="help_back")]]
 
