@@ -20,15 +20,13 @@ from haruka.modules.helper_funcs.misc import paginate_modules
 from haruka.modules.translations.strings import tld, tld_help 
 from haruka.modules.connection import connected
 
-PM_START = """Hai {}, nama saya adalah {}!
+PM_START = """Hai {}!
 
-Saya adalah pengurus group untuk anda! 
+Nama saya {} dan saya akan menemani awak sepanjang masa di dalam group ini.
 
-Pemilik saya adalah [Awinas 🇲🇾] (t.me/awinaswina) 
+Tekan /help atau butang Help untuk mengetahui dengan lebih lanjut tentang saya! 
 
-Tekan /help atau butang Help untuk mengetahui dengan lebih lanjut mengenai potensi Layla! 
-
-Moga hari anda lebih ceria! 
+GLHF! 
 """
 
 
@@ -146,9 +144,9 @@ def send_start(bot, update):
     first_name = update.effective_user.first_name 
     text = PM_START
 
-    keyboard = [[InlineKeyboardButton(text="🇲🇾 Language", callback_data="set_lang_")]]
-    keyboard += [[InlineKeyboardButton(text="🛠 Reporting", callback_data="cntrl_panel_M"), 
-        InlineKeyboardButton(text="❔ Help", callback_data="help_back")]]
+    keyboard = [[InlineKeyboardButton(text="🇲🇾 Bahasa", callback_data="set_lang_")]]
+    keyboard += [[InlineKeyboardButton(text="🛠 Melaporkan", callback_data="cntrl_panel_M"), 
+        InlineKeyboardButton(text="❔ Bantuan", callback_data="help_back")]]
 
     update.effective_message.reply_text(PM_START.format(escape_markdown(first_name), bot.first_name), reply_markup=InlineKeyboardMarkup(keyboard), disable_web_page_preview=True, parse_mode=ParseMode.MARKDOWN)
 
