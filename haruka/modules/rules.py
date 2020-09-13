@@ -25,30 +25,30 @@ def send_rules(update, chat_id, from_pm=False):
     try:
         chat = bot.get_chat(chat_id)
     except BadRequest as excp:
-        if excp.message == "Perbualan tidak dijumpai" and from_pm:
-            bot.send_message(user.id, "Jalan pintas kepada peraturan ini tidak ditetapkan! Mintak admin lakukan "
-                                      "baiki ini.")
+        if excp.message == "Chat not found" and from_pm:
+            bot.send_message(user.id, "The rules shortcut for this chat hasn't been set properly! Ask admins to "
+                                      "fix this.")
             return
         else:
             raise
 
     rules = sql.get_rules(chat_id)
-    text = "Peraturan group *{}* adalah:\n\n{}".format(escape_markdown(chat.title), rules)
+    text = "The rules for *{}* are:\n\n{}".format(escape_markdown(chat.title), rules)
 
     if from_pm and rules:
         bot.send_message(user.id, text, parse_mode=ParseMode.MARKDOWN)
     elif from_pm:
-        bot.send_message(user.id, "Admin group belum menetapkan apa-apa peraturan. "
-                                  "Tapi, tidak semestinya tidak berperaturan...!")
+        bot.send_message(user.id, "The group admins haven't set any rules for this chat yet. "
+                                  "This probably doesn't mean it's lawless though...!")
     elif rules:
-        update.effective_message.reply_text("Tekan butang ini untuk melihat peraturan.",
+        update.effective_message.reply_text("Click the button below to get this group's rules.",
                                             reply_markup=InlineKeyboardMarkup(
-                                                [[InlineKeyboardButton(text="Peraturan",
+                                                [[InlineKeyboardButton(text="Rules",
                                                                        url="t.me/{}?start={}".format(bot.username,
                                                                                                      chat_id))]]))
     else:
-        update.effective_message.reply_text("Admin group belum menetapkan apa-apa peraturan. "
-                                            "Tapi, tidak semestinya tidak berperaturan...!")
+        update.effective_message.reply_text("The group admins haven't set any rules for this chat yet. "
+                                            "This probably doesn't mean it's lawless though...!")
 
 
 @run_async
@@ -64,7 +64,7 @@ def set_rules(bot: Bot, update: Update):
         markdown_rules = markdown_parser(txt, entities=msg.parse_entities(), offset=offset)
 
         sql.set_rules(chat_id, markdown_rules)
-        update.effective_message.reply_text("Berjaya menetapkan peraturan group ini.")
+        update.effective_message.reply_text("Successfully set rules for this group.")
 
 
 @run_async
@@ -72,7 +72,7 @@ def set_rules(bot: Bot, update: Update):
 def clear_rules(bot: Bot, update: Update):
     chat_id = update.effective_chat.id
     sql.set_rules(chat_id, "")
-    update.effective_message.reply_text("Berjaya memadam peraturan ini!")
+    update.effective_message.reply_text("Successfully cleared rules!")
 
 
 def __stats__():
@@ -90,15 +90,15 @@ def __migrate__(old_chat_id, new_chat_id):
 
 
 def __chat_settings__(bot, update, chat, chatP, user):
-    return "Perbualan ini mempunyai peraturan: `{}`".format(bool(sql.get_rules(chat.id)))
+    return "This chat has had it's rules set: `{}`".format(bool(sql.get_rules(chat.id)))
 
 
 __help__ = """
- - /rules: dapatkan maklumat peraturan anda.
+ - /rules: get the rules for this chat.
 
 *Admin only:*
- - /setrules <tetapkan peraturan anda>: tetapkan peraturan perbualan ini.
- - /clearrules: memadam peraturan anda.
+ - /setrules <your rules here>: set the rules for this chat.
+ - /clearrules: clear the rules for this chat.
 """
 
 __mod_name__ = "Rules"
